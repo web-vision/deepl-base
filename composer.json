@@ -1,0 +1,112 @@
+{
+	"name": "web-vision/deepl-base",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 Extension providing shared things across deepl related extensions, for example a shared point when overriding same TYPO3 backend fluid files are required and similar.",
+	"license": ["GPL-2.0-or-later"],
+	"homepage": "https://www.web-vision.de/en/automated-translations-with-typo3-and-deepl.html",
+	"minimum-stability": "beta",
+	"prefer-stable": true,
+	"keywords": [
+		"TYPO3 CMS",
+		"extension",
+		"translate",
+		"deepl"
+	],
+	"authors": [
+		{
+			"name": "web-vision GmbH",
+			"email": "hello@web-vision.de",
+			"role": "Maintainer"
+		},
+		{
+			"name": "Mark Houben",
+			"email": "markhouben91@gmail.com",
+			"role": "Developer"
+		},
+		{
+			"name": "Markus Hofmann",
+			"email": "typo3@calien.de",
+			"role": "Developer"
+		},
+		{
+			"name": "Riad Zejnilagic Trumic",
+			"role": "Developer"
+		},
+		{
+			"name": "Stefan Bürk",
+			"role": "Developer",
+			"email": "stefan@buerk.tech"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/web-vision/deepl-base/issues",
+		"source": "https://github.com/web-vision/deepl-base"
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin",
+		"optimize-autoloader": true,
+		"sort-packages": true,
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "deepl_base",
+			"web-dir": ".Build/Web",
+			"app-dir": ".Build"
+		},
+		"branch-alias": {
+			"dev-main": "1.x.x-dev"
+		}
+	},
+	"require": {
+		"php": "^8.1 || ^8.2 || ^8.3 || ^8.4",
+		"ext-curl": "*",
+		"ext-json": "*",
+		"ext-pdo": "*",
+		"typo3/cms-backend": "^12.4.2 || ^13.4",
+		"typo3/cms-core": "^12.4.2 || ^13.4",
+		"typo3/cms-fluid": "^12.4.2 || ^13.4"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^3.41",
+		"helmich/phpunit-json-assert": "^3.4.3 || ^3.5.1",
+		"helmich/typo3-typoscript-lint": "^3.1.0",
+		"nikic/php-parser": "^4.15.1 || ^5.1.0",
+		"php-mock/php-mock-phpunit": "^2.6",
+		"phpstan/phpstan": "^1.10",
+		"phpunit/phpunit": "^10.5",
+		"ramsey/uuid": "^4.2",
+		"saschaegerer/phpstan-typo3": "^1.9",
+		"sbuerk/typo3-site-based-test-trait": "^1.0.2 || ^2.0.1",
+		"sbuerk/typo3-styleguide-selector": "^12.0.5 || ^13.4",
+		"typo3/cms-belog": "^12.4.2 || ^13.4",
+		"typo3/cms-dashboard": "^12.4.2 || ^13.4",
+		"typo3/cms-extbase": "^12.4.2 || ^13.4",
+		"typo3/cms-extensionmanager": "^12.4.2 || ^13.4",
+		"typo3/cms-filelist": "^12.4.2 || ^13.4",
+		"typo3/cms-fluid-styled-content": "^12.4.2 || ^13.4",
+		"typo3/cms-frontend": "^12.4.2 || ^13.4",
+		"typo3/cms-info": "^12.4.2 || ^13.4",
+		"typo3/cms-install": "^12.4.2 || ^13.4",
+		"typo3/cms-lowlevel": "^12.4.2 || ^13.4",
+		"typo3/cms-rte-ckeditor": "^12.4.2 || ^13.4",
+		"typo3/cms-styleguide": "^12.0.5 || ^13.4",
+		"typo3/cms-tstemplate": "^12.4.2 || ^13.4",
+		"typo3/cms-workspaces": "^12.4.2 || ^13.4",
+		"typo3/testing-framework": "^8.2.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"WebVision\\Deepl\\Base\\": "Classes"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"WebVision\\Deepl\\Base\\Tests\\": "Tests"
+		}
+	}
+}
