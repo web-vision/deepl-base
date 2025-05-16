@@ -27,6 +27,40 @@ waitFor() {
     fi
 }
 
+prepareCoreOverrideJavaScriptFilesBuildPath() {
+    local buildSystemPath="${ROOT_DIR}/Build/buildsystem/core${CORE_VERSION}"
+    mkdir -p "${buildSystemPath}"
+    cd ${buildSystemPath}
+    if [[ ! -d .git ]]; then
+        git clone https://github.com/TYPO3/typo3.git .
+        git config advice.detachedHead false
+        git config branch.autosetuprebase remote
+    fi
+    git reset --hard
+    git clean -xdf
+    git fetch --all --tags --prune
+    git checkout main
+    git reset --hard origin/main
+    git checkout main
+    git checkout ${CORE_JAVASCRIPT_CHECKOUT}
+    cd "${ROOT_DIR}"
+}
+
+copyJavaScriptSourcesToBuild() {
+    \cp -rvf "./Build/Overrides/Core${CORE_VERSION}/Sources" "./Build/buildsystem/core${CORE_VERSION}/Build/"
+}
+
+buildCoreJavaScriptFiles() {
+    "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -s buildJavascript
+}
+
+buildApplyCompiledFilesToResources() {
+    echo ">> Copy compiled override JavaScripts back to resources folder ..."
+    cp -vf \
+        "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization.js" \
+        "Resources/Public/JavaScript/Core${CORE_VERSION}/localization.js"
+}
+
 cleanUp() {
     ATTACHED_CONTAINERS=$(${CONTAINER_BIN} ps --filter network=${NETWORK} --format='{{.Names}}')
     for ATTACHED_CONTAINER in ${ATTACHED_CONTAINERS}; do
@@ -143,6 +177,7 @@ Usage: $0 [options] [file]
 Options:
     -s <...>
         Specifies which test suite to run
+            - buildCoreOverrideJavaScriptFiles: Build TYPO3 core JavaScript override files using TYPO3 build system
             - cgl: cgl test and fix all php files
             - checkBom: check UTF-8 files do not contain BOM
             - checkExceptionCodes: Check for duplicate exception codes
@@ -294,6 +329,7 @@ fi
 # Option defaults
 TEST_SUITE="unit"
 CORE_VERSION="12"
+CORE_JAVASCRIPT_CHECKOUT="12.4.0"
 DBMS="sqlite"
 PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
@@ -342,6 +378,11 @@ while getopts "a:b:s:d:i:p:t:xy:o:nhu" OPT; do
             if ! [[ ${CORE_VERSION} =~ ^(12|13)$ ]]; then
                 INVALID_OPTIONS+=("t ${OPTARG}")
             fi
+            if [[ "${CORE_VERSION}" == "12" ]]; then
+                CORE_JAVASCRIPT_CHECKOUT="v12.4.0"
+            else
+                CORE_JAVASCRIPT_CHECKOUT="v13.4.0"
+            fi
             ;;
         x)
             PHP_XDEBUG_ON=1
@@ -385,7 +426,7 @@ fi
 
 handleDbmsOptions
 
-COMPOSER_ROOT_VERSION="2.0.x-dev"
+COMPOSER_ROOT_VERSION="1.0.x-dev"
 CONTAINER_INTERACTIVE="-it --init"
 HOST_UID=$(id -u)
 USERSET=""
@@ -445,7 +486,7 @@ echo "Architecture" ${ARCH} "requires" ${IMAGE_SELENIUM} "to run acceptance test
 shift $((OPTIND - 1))
 
 SUFFIX=$(echo $RANDOM)
-NETWORK="wv-deepltranslate-${SUFFIX}"
+NETWORK="deeplbase-${SUFFIX}"
 ${CONTAINER_BIN} network create ${NETWORK} >/dev/null
 
 if [ "${CONTAINER_BIN}" == "docker" ]; then
@@ -471,6 +512,13 @@ fi
 
 # Suite execution
 case ${TEST_SUITE} in
+    buildCoreOverrideJavaScriptFiles)
+        prepareCoreOverrideJavaScriptFilesBuildPath
+        cd "${ROOT_DIR}"
+        copyJavaScriptSourcesToBuild
+        buildCoreJavaScriptFiles
+        buildApplyCompiledFilesToResources
+        ;;
     cgl)
         if [ "${CGLCHECK_DRY_RUN}" -eq 1 ]; then
             COMMAND="php -dxdebug.mode=off .Build/bin/php-cs-fixer fix --config Build/php-cs-fixer/php-cs-rules.php -v --dry-run --using-cache no --diff"
