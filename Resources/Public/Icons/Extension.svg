@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Favicon_32x32" data-name="Favicon 32x32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 47.09 47.04">
+    <defs>
+        <style>
+            .cls-1 {
+            fill: #ff8700;
+            }
+
+            .cls-2 {
+            fill: #fff;
+            }
+        </style>
+    </defs>
+    <rect class="cls-1" width="47.09" height="47.04"/>
+    <g>
+        <polygon class="cls-2" points="12.81 20.87 15.15 17.28 11.64 11.46 17.71 11.46 19.93 8 5.57 8 12.81 20.87"/>
+        <polygon class="cls-2" points="20.39 26.5 16.01 26.5 23.25 39.04 41.52 8 26.93 8 28.74 11.56 34.69 11.56 23.38 31.33 20.39 26.5"/>
+    </g>
+</svg>

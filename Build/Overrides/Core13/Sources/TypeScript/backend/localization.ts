@@ -17,13 +17,21 @@
 
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from './icons';
-import Modal, { ModalElement } from './modal';
-import MultiStepWizard, { MultiStepWizardSettings } from './multi-step-wizard';
+import Modal, { type ModalElement } from './modal';
+import MultiStepWizard, { type MultiStepWizardSettings } from './multi-step-wizard';
 import '@typo3/backend/element/icon-element';
+import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
+
+export type LocalizationProvider = {
+  identifier: string;
+  icon: string;
+  title: string;
+  description: string;
+};
 
 type LanguageRecord = {
   uid: number;
@@ -57,8 +65,7 @@ class Localization {
   }
 
   private async initialize(): Promise<void> {
-    const localizeIconMarkup = await Icons.getIcon('actions-localize', Icons.sizes.large);
-    const copyIconMarkup = await Icons.getIcon('actions-edit-copy', Icons.sizes.large);
+    topLevelModuleImport('@typo3/backend/localization/provider-list.js');
 
     $(this.triggerButton).removeClass('disabled');
 
@@ -66,10 +73,11 @@ class Localization {
       e.preventDefault();
 
       const $triggerButton = $(e.currentTarget);
-      const actions: Array<string> = [];
-      const availableLocalizationModes: Array<string> = [];
+      const pageId = parseInt($triggerButton.data('pageId'), 10);
+      const languageId = parseInt($triggerButton.data('languageId'), 10);
+      const availableLocalizationModes: LocalizationProvider[] = await (await this.getLocalizationProviders(pageId, languageId)).resolve();
 
-      if ($triggerButton.data('allowTranslate') === 0 && $triggerButton.data('allowCopy') === 0) {
+      if (availableLocalizationModes.length === 0) {
         Modal.confirm(
           TYPO3.lang['window.localization.mixed_mode.title'],
           TYPO3.lang['window.localization.mixed_mode.message'],
@@ -87,59 +95,22 @@ class Localization {
       }
 
       const availableLanguages: LanguageRecord[] = await (await this.loadAvailableLanguages(
-        parseInt($triggerButton.data('pageId'), 10),
-        parseInt($triggerButton.data('languageId'), 10),
+        pageId,
+        languageId,
       )).resolve();
-
-      if ($triggerButton.data('allowTranslate')) {
-        actions.push(
-          '<div class="row">'
-          + '<div class="col-sm-3">'
-          + '<input class="btn-check t3js-localization-option" type="radio" name="mode" id="mode_translate" value="localize">'
-          + '<label class="btn btn-default btn-block-vertical" for="mode_translate" data-action="localize">'
-          + localizeIconMarkup
-          + TYPO3.lang['localize.wizard.button.translate']
-          + '</label>'
-          + '</div>'
-          + '<div class="col-sm-9">'
-          + '<p class="text-body-secondary">' + TYPO3.lang['localize.educate.translate'] + '</p>'
-          + '</div>'
-          + '</div>',
-        );
-        availableLocalizationModes.push('localize');
-      }
-
-      if ($triggerButton.data('allowCopy')) {
-        actions.push(
-          '<div class="row">'
-          + '<div class="col-sm-3">'
-          + '<input class="btn-check t3js-localization-option" type="radio" name="mode" id="mode_copy" value="copyFromLanguage">'
-          + '<label class="btn btn-default btn-block-vertical" for="mode_copy" data-action="copy">'
-          + copyIconMarkup
-          + TYPO3.lang['localize.wizard.button.copy']
-          + '</label>'
-          + '</div>'
-          + '<div class="col-sm-9">'
-          + '<p class="t3js-helptext t3js-helptext-copy text-body-secondary">' + TYPO3.lang['localize.educate.copy'] + '</p>'
-          + '</div>'
-          + '</div>',
-        );
-        availableLocalizationModes.push('copyFromLanguage');
-      }
 
       if (availableLocalizationModes.length === 1) {
         MultiStepWizard.set('localizationMode', availableLocalizationModes[0]);
       } else {
-        const buttonContainer = document.createElement('div');
-        buttonContainer.dataset.bsToggle = 'buttons';
-        buttonContainer.append(...actions.map((actionMarkup: string): DocumentFragment => document.createRange().createContextualFragment(actionMarkup)));
+        const providerList = document.createElement('typo3-localization-wizard-provider-list');
+        providerList.providers = availableLocalizationModes;
 
         MultiStepWizard.addSlide(
           'localize-choose-action',
           TYPO3.lang['localize.wizard.header_page']
             .replace('{0}', $triggerButton.data('page'))
             .replace('{1}', $triggerButton.data('languageName')),
-          buttonContainer,
+          providerList,
           SeverityEnum.notice,
           TYPO3.lang['localize.wizard.step.selectMode'],
           ($slide: JQuery, settings: MultiStepWizardSettings): void => {
@@ -210,7 +181,8 @@ class Localization {
           const result: SummaryRecord = await (await this.getSummary(
             parseInt($triggerButton.data('pageId'), 10),
             parseInt($triggerButton.data('languageId'), 10),
-            settings.sourceLanguage
+            settings.sourceLanguage,
+            settings.localizationMode,
           )).resolve();
 
           $slide.empty();
@@ -227,7 +199,7 @@ class Localization {
 
             const column = columns[colPos];
             const rowElement = document.createElement('div');
-            rowElement.classList.add('row', 'gy-2')
+            rowElement.classList.add('row', 'gy-2');
 
             result.records[colPos].forEach((record: SummaryColPosRecord): void => {
               const label = ' (' + record.uid + ') ' + record.title;
@@ -352,6 +324,13 @@ class Localization {
     });
   }
 
+  private getLocalizationProviders(pageId: number, languageId: number): Promise<AjaxResponse> {
+    return new AjaxRequest(TYPO3.settings.ajaxUrls.records_localize_providers).withQueryArguments({
+      uid: pageId,
+      languageId: languageId,
+    }).get();
+  }
+
   /**
    * Load available languages from page
    *
@@ -369,11 +348,12 @@ class Localization {
   /**
    * Get summary for record processing
    */
-  private getSummary(pageId: number, languageId: number, sourceLanguage: number): Promise<AjaxResponse> {
+  private getSummary(pageId: number, languageId: number, sourceLanguage: number, localizationMode: string): Promise<AjaxResponse> {
     return new AjaxRequest(TYPO3.settings.ajaxUrls.records_localize_summary).withQueryArguments({
       pageId: pageId,
       destLanguageId: languageId,
       languageId: sourceLanguage,
+      localizationMode: localizationMode,
     }).get();
   }
 
