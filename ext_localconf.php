@@ -18,7 +18,7 @@ defined('TYPO3') or die();
     if ($typo3version->getMajorVersion() === 13
         && version_compare($typo3version->getVersion(), '13.4.10', '<')
     ) {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['web-vision/deepltranslate-core']
-            = 'EXT:deepltranslate_core/Resources/Public/Css/patch-105853.css';
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['web-vision/deepl-base']
+            = 'EXT:deepl_base/Resources/Public/Css/patch-105853.css';
     }
 })();

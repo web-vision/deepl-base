@@ -51,14 +51,37 @@ copyJavaScriptSourcesToBuild() {
 }
 
 buildCoreJavaScriptFiles() {
-    "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -s buildJavascript
+    if [[ "${CORE_VERSION}" -eq 13 ]]; then
+        "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -b ${CONTAINER_BIN} -s buildJavascript
+    else
+        "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -s buildJavascript
+    fi
 }
 
 buildApplyCompiledFilesToResources() {
     echo ">> Copy compiled override JavaScripts back to resources folder ..."
-    cp -vf \
-        "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization.js" \
-        "Resources/Public/JavaScript/Core${CORE_VERSION}/localization.js"
+    if [[ "${CORE_VERSION}" -eq 12 ]]; then
+        # ensure folder exists
+#        mkdir -p "Resources/Public/JavaScript/Core${CORE_VERSION}/localization"
+        # copy files
+        cp -vf \
+            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization.js" \
+            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization.js"
+#        cp -vf \
+#            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization/provider-list.js" \
+#            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization/provider-list.js"
+    fi
+    if [[ "${CORE_VERSION}" -eq 13 ]]; then
+        # ensure folder exists
+        mkdir -p "Resources/Public/JavaScript/Core${CORE_VERSION}/localization"
+        # copy files
+        cp -vf \
+            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization.js" \
+            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization.js"
+        cp -vf \
+            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization/provider-list.js" \
+            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization/provider-list.js"
+    fi
 }
 
 cleanUp() {
