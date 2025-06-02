@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebVision\Deepl\Base\ViewHelper;
+
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3Fluid\Fluid\Core\Variables\ScopedVariableProvider;
+use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
+use WebVision\Deepl\Base\Event\ViewHelper\ModifyInjectVariablesViewHelperEvent;
+
+final class InjectVariablesViewHelper extends AbstractViewHelper
+{
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {}
+
+    public function initializeArguments(): void
+    {
+        $this->registerArgument('identifier', 'string', 'Unique identifier for the place', true);
+    }
+
+    public function render(): string
+    {
+        $globalVariableProvider = $this->renderingContext->getVariableProvider();
+        $localVariableProvider = new StandardVariableProvider();
+        $identifier = (string)($this->arguments['identifier'] ?? '');
+        if ($identifier === '') {
+            throw new \InvalidArgumentException(
+                'InjectVariableViewHelper argument "identifier" must be a non-empty string.',
+                1748872475,
+            );
+        }
+        $event = $this->eventDispatcher->dispatch(new ModifyInjectVariablesViewHelperEvent(
+            identifier: $this->arguments['identifier'],
+            globalVariableProvider: $globalVariableProvider,
+            localVariableProvider: $localVariableProvider,
+        ));
+        $globalVariableProvider = $event->getGlobalVariableProvider();
+        $localVariableProvider = $event->getLocalVariableProvider();
+        $scopedVariableProvider = new ScopedVariableProvider($globalVariableProvider, $localVariableProvider);
+        // Render children with combined global and local variable context
+        $this->renderingContext->setVariableProvider($scopedVariableProvider);
+        $value = $this->renderChildren();
+        // Restore enriched global variables
+        $this->renderingContext->setVariableProvider($globalVariableProvider);
+        // Return rendered children.
+        return $value;
+    }
+}
