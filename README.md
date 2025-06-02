@@ -47,3 +47,59 @@ composer require 'web-vision/deepl-base':'1.*.*@dev'
 composer config minimum-stability "dev" \
 && composer config "prefer-stable" true
 ```
+
+## Documentation
+
+> [!NOTE]
+> For the start the documentation for developers and integrators are contained
+> here in the README.md file and will be converted into a rendered documentation
+> at a later point.
+
+### PageLayout module localization model - Translation Modes
+
+### ViewHelper
+
+#### InjectVariablesViewHelper
+
+`InjectVariablesViewHelper` can be placed in fluid templates and
+requires to define a speaking identifier used to dispatch the PSR-14
+`ModifyInjectVariablesViewHelperEvent` event, which can be used to
+set or modify variables either in the global current template scope
+or for children rendering scope.
+
+##### Example usage in fluid template
+
+```xhtml
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:deeplbase="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+>
+<deeplbase:injectVariables identifier="custom-template-variable-inject">
+    Render {globalOrLocalVariableProviderVariable} only available in children
+    context.
+</deeplbase:injectVariables>
+Render {globalOnlyVariableProviderVariable} only ignoring local variable provider
+changes.
+</html>
+```
+
+##### ModifyInjectVariablesViewHelperEvent
+
+* `getIdentifier(): string`: identifier used within the fluid template and
+  should
+* `getGlobalVariableProvider(): VariableProviderInterface`: provides the
+  fluid variable container of the current context. Modification will be
+  available after the ViewHelper and within the children context unless
+  overridden within the `getLocalVariableProvider`.
+* `getLocalVariableProvider(): VariableProviderInterface`: provides the
+  fluid variable container with children context only variables, overriding
+  global variables. Local variable does not change the variables in the
+  template after the ViewHelper call.
+
+### Modified Backend Templates
+
+> [!NOTE]
+> Modifed backend templates are listed here describing the modification, for
+> example if one or more [InjectVariableViewhelper](#injectvariablesviewhelper)
+> has been places along with the identifier and use-case.
