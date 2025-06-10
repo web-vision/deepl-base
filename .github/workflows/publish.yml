@@ -68,7 +68,8 @@ jobs:
       # Note that when release already exists for tag, only files will be uploaded and lets this acting as a
       # fallback to ensure that a real GitHub release is created for the tag along with extension artifacts.
       - name: Create release and upload artifacts in the same step
-        uses: softprops/action-gh-release@v2
+        # @todo Revert to release version when https://github.com/softprops/action-gh-release/issues/628 is fixed.
+        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631
         if: ${{startsWith(github.ref, 'refs/tags/') }}
         with:
           name: "[RELEASE] ${{ env.version }}"
