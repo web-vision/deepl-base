@@ -1,21 +1,21 @@
 # TYPO3 Extension `DeepL Base`
 
-|                  | URL                                                                     |
-|------------------|-------------------------------------------------------------------------|
-| **Repository:**  | https://github.com/fgtclb/academic-bite-jobs                            |
-| **Read online:** | https://docs.typo3.org/p/fgtclb/academic/academic-bite-jobs/main/en-us/ |
-| **TER:**         | https://extensions.typo3.org/extension/academic_bite_jobs/              |
+|                  | URL                                                        |
+|------------------|------------------------------------------------------------|
+| **Repository:**  | https://github.com/web-vision/deepl-base                   |
+| **Read online:** | https://docs.typo3.org/p/web-vision/deepl-base/main/en-us/ |
+| **TER:**         | https://extensions.typo3.org/extension/deepl_base/         |
 
 ## Description
 
 This package is a TYPO Extension providing some shared things required
 by multiple deepl translate or write related extensions, which should
-work together but must working independent of each other requiring this
+work together but must work independent of each other, requiring this
 shared base extension as common ground.
 
 > [!NOTE]
-> This extension does not provide anything use-full as direct usage,
-> and make no sense to install it solo. Should only be a dependency
+> This extension does not provide anything useful as direct usage,
+> and makes no sense to install it standalone. Should only be a dependency
 > for other extensions.
 
 ## Compatibility
@@ -51,8 +51,8 @@ composer config minimum-stability "dev" \
 ## Documentation
 
 > [!NOTE]
-> For the start the documentation for developers and integrators are contained
-> here in the README.md file and will be converted into a rendered documentation
+> For the start, the documentation for developers and integrators is contained
+> here in the README.md file and will be converted into rendered documentation
 > at a later point.
 
 ### PageLayout module localization model - Translation Modes
@@ -84,6 +84,31 @@ changes.
 </html>
 ```
 
+##### Explicit usage from this extension
+
+```xhtml
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:deeplbase="http://typo3.org/ns/WebVision/Deepl/Base/ViewHelpers"
+>
+<deeplbase:injectVariables identifier="languageTranslationDropdown">
+    <f:for each="{translationPartials}" as="translationPartial">
+        <f:render partial="{translationPartial}" arguments="{_all}"/>
+    </f:for>
+</deeplbase:injectVariables>
+</html>
+```
+
+###### What does it do?
+
+This part renders partials registered by an EventListener. With this identifier
+an extension could provide its own translation dropdown for the Backend PageView.
+The extension must be self-aware registering a partial, which is callable by Fluid.
+
+A working example is provided at `Classes/EventListener/DefaultTranslationDropdownEventListener.php`
+and `Resources/Private/Backend/Partials/Translation/DefaultTranslationDropdown.html`.
+
 ##### ModifyInjectVariablesViewHelperEvent
 
 * `getIdentifier(): string`: identifier used within the fluid template and
@@ -101,5 +126,5 @@ changes.
 
 > [!NOTE]
 > Modifed backend templates are listed here describing the modification, for
-> example if one or more [InjectVariableViewhelper](#injectvariablesviewhelper)
-> has been places along with the identifier and use-case.
+> example, if one or more [InjectVariableViewhelper](#injectvariablesviewhelper)
+> has been placed along with the identifier and use-case.

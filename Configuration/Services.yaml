@@ -20,3 +20,9 @@ services:
       - name: 'event.listener'
         identifier: 'deepl-base/process-default-typo3-localization-modes'
         event: WebVision\Deepl\Base\Event\LocalizationProcessPrepareDataHandlerCommandMapEvent
+
+  WebVision\Deepl\Base\EventListener\DefaultTranslationDropdownEventListener:
+    tags:
+      - name: 'event.listener'
+        identifier: 'deepl-base/default-translation'
+        event: WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent
