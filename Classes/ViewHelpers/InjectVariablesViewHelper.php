@@ -16,6 +16,8 @@ use WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent;
  */
 final class InjectVariablesViewHelper extends AbstractViewHelper
 {
+    protected $escapeOutput = false;
+
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
     ) {
@@ -30,7 +32,6 @@ final class InjectVariablesViewHelper extends AbstractViewHelper
     {
         $globalVariableProvider = $this->renderingContext->getVariableProvider();
         $localVariableProvider = new StandardVariableProvider();
-        /** @phpstan-ignore-next-line  */
         $identifier = (string)($this->arguments['identifier'] ?? '');
         if ($identifier === '') {
             throw new \InvalidArgumentException(
@@ -48,7 +49,6 @@ final class InjectVariablesViewHelper extends AbstractViewHelper
         $scopedVariableProvider = new ScopedVariableProvider($globalVariableProvider, $localVariableProvider);
         // Render children with combined global and local variable context
         $this->renderingContext->setVariableProvider($scopedVariableProvider);
-        /** @phpstan-ignore-next-line  */
         $value = (string)$this->renderChildren();
         // Restore enriched global variables
         $this->renderingContext->setVariableProvider($globalVariableProvider);

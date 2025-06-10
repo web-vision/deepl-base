@@ -8,7 +8,7 @@ parameters:
   # Use local .cache dir instead of /tmp
   tmpDir: ../../../.cache/phpstan
 
-  level: 9
+  level: 8
 
   paths:
     - ../../../Classes

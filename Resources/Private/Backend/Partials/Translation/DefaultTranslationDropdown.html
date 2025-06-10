@@ -1,0 +1,15 @@
+<html
+    data-namespace-typo3-fluid="true"
+    xmlns:deepl="http://typo3.org/ns/WebVision/Deepltranslate/Core/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+>
+<div class="col">
+    <select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">
+        <f:for each="{context.newLanguageOptions}" as="languageName" key="url">
+            <option value="{url}">{languageName}</option>
+        </f:for>
+    </select>
+</div>
+</html>
