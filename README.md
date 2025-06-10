@@ -73,7 +73,7 @@ or for children rendering scope.
 <html
     data-namespace-typo3-fluid="true"
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-    xmlns:deeplbase="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:deeplbase="http://typo3.org/ns/WebVision/Deepl/Base/ViewHelpers"
 >
 <deeplbase:injectVariables identifier="custom-template-variable-inject">
     Render {globalOrLocalVariableProviderVariable} only available in children
