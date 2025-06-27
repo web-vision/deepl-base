@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebVision\Deepl\Base\EventListener;
 
+use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use WebVision\Deepl\Base\Event\GetLocalizationModesEvent;
 use WebVision\Deepl\Base\Localization\LocalizationMode;
@@ -24,22 +25,22 @@ final class ProvideDefaultTypo3LocalizationModesEventListener
         $modes = [];
         if ($this->allowTranslate($event)) {
             $modes[] = new LocalizationMode(
-                identifier: 'localize',
+                identifier: LocalizationController::ACTION_LOCALIZE,
                 title: $event->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.translate'),
                 description: $event->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.translate'),
                 icon: 'actions-localize',
-                before: ['copy'],
+                before: [LocalizationController::ACTION_COPY],
                 after: [],
             );
         }
         if ($this->allowCopy($event)) {
             $modes[] = new LocalizationMode(
-                identifier: 'copy',
+                identifier: LocalizationController::ACTION_COPY,
                 title: $event->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.copy'),
                 description: $event->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.copy'),
                 icon: 'actions-edit-copy',
                 before: [],
-                after: ['localize'],
+                after: [LocalizationController::ACTION_LOCALIZE],
             );
         }
 
