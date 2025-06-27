@@ -9,7 +9,9 @@ use PHPUnit\Framework\Attributes\Test;
 use SBUERK\TYPO3\Testing\SiteHandling\SiteBasedTestTrait;
 use SBUERK\TYPO3\Testing\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use WebVision\Deepl\Base\Controller\Backend\LocalizationController;
@@ -52,12 +54,12 @@ final class LocalizationControllerTest extends FunctionalTestCase
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.translate',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.translate',
                         'icon' => 'actions-localize',
-                        'before' => ['copy'],
+                        'before' => ['copyFromLanguage'],
                         'after' => [],
                         'restrictedSourceLanguageIds' => null,
                     ],
                     [
-                        'identifier' => 'copy',
+                        'identifier' => 'copyFromLanguage',
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.copy',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.copy',
                         'icon' => 'actions-edit-copy',
@@ -79,12 +81,12 @@ final class LocalizationControllerTest extends FunctionalTestCase
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.translate',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.translate',
                         'icon' => 'actions-localize',
-                        'before' => ['copy'],
+                        'before' => ['copyFromLanguage'],
                         'after' => [],
                         'restrictedSourceLanguageIds' => null,
                     ],
                     [
-                        'identifier' => 'copy',
+                        'identifier' => 'copyFromLanguage',
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.copy',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.copy',
                         'icon' => 'actions-edit-copy',
@@ -114,7 +116,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.translate',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.translate',
                         'icon' => 'actions-localize',
-                        'before' => ['copy'],
+                        'before' => ['copyFromLanguage'],
                         'after' => [],
                         'restrictedSourceLanguageIds' => null,
                     ],
@@ -128,7 +130,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
             'expectedModesJsonString' => \json_encode(
                 [
                     [
-                        'identifier' => 'copy',
+                        'identifier' => 'copyFromLanguage',
                         'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.wizard.button.copy',
                         'description' => 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:localize.educate.copy',
                         'icon' => 'actions-edit-copy',
@@ -185,6 +187,69 @@ final class LocalizationControllerTest extends FunctionalTestCase
             $siteLanguage->getLanguageId(),
         );
         $this->assertSame($expectedModesJsonString, \json_encode($modes, JSON_THROW_ON_ERROR));
+    }
+
+    public static function translationModesDataProvider(): \Generator
+    {
+        yield 'Translation mode "localize" works' => [
+            'getParams' => [
+                'pageId' => 3,
+                'srcLanguageId' => 0,
+                'destLanguageId' => 1,
+                'action' => 'localize',
+                'uidList' => [1],
+            ],
+            'expectedFixture' => __DIR__ . '/Fixtures/TranslationModes/Result/localize.csv',
+        ];
+        yield 'Translation mode "copy" works' => [
+            'getParams' => [
+                'pageId' => 3,
+                'srcLanguageId' => 0,
+                'destLanguageId' => 1,
+                'action' => 'copyFromLanguage',
+                'uidList' => [1],
+            ],
+            'expectedFixture' => __DIR__ . '/Fixtures/TranslationModes/Result/copyToLanguage.csv',
+        ];
+    }
+
+    /**
+     * @param array{
+     *     pageId: int,
+     *     srcLanguageId: int,
+     *     destLanguageId: int,
+     *     action: string,
+     *     uidList: int[]
+     * } $getParams
+     */
+    #[DataProvider('translationModesDataProvider')]
+    #[Test]
+    public function translationModesWorkAsExpected(
+        array $getParams,
+        string $expectedFixture
+    ): void {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslationModes/TranslationModeSetup.csv');
+        $this->writeSiteConfiguration(
+            identifier: 'acme',
+            site: $this->buildSiteConfiguration(
+                rootPageId: 1,
+            ),
+            languages: [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('EN', '/eb/', ['EN'], 'strict'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['DE'], 'strict'),
+                $this->buildLanguageConfiguration('FR', '/fr/', ['FR'], 'strict'),
+            ],
+        );
+        $this->setUpFrontendRootPage(1, [], []);
+        $beUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+            ->createFromUserPreferences($beUser);
+        $request = (new ServerRequest('http://localhost/typo3/ajax/records/localize/process'))
+            ->withQueryParams($getParams);
+        $response = $this->createSubject()->localizeRecords($request);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertCSVDataSet($expectedFixture);
     }
 
     private function createSubject(): LocalizationController
