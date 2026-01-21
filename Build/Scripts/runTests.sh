@@ -38,6 +38,7 @@ prepareCoreOverrideJavaScriptFilesBuildPath() {
     fi
     git reset --hard
     git clean -xdf
+    git status
     git fetch --all --tags --prune
     git checkout main
     git reset --hard origin/main

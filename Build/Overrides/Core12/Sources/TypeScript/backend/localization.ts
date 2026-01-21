@@ -367,7 +367,7 @@ class Localization {
     const iconMarkup: string = await Icons.getIcon(provider.icon, Icons.sizes.large, null, null, MarkupIdentifiers.inline);
     return Promise.resolve(
       '<div class="row">'
-      + '<div class="col-sm-3">'
+      + '<div class="col-sm-3" style="margin-bottom: 20px;">'
       + '<label class="btn btn-default d-block t3js-localization-option" data-helptext=".t3js-helptext-translate">'
       + iconMarkup
       + '<input type="radio" name="mode" id="' + provider.identifier + '" value="' + provider.identifier + '" style="display: none">'
