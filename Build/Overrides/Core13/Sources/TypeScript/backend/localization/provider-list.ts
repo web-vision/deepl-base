@@ -23,7 +23,7 @@ class LocalizationProviders extends LitElement {
   public override render(): TemplateResult {
     return html`${this.providers.map((provider) =>
       html`<div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="margin-bottom: 20px;">
           <input class="btn-check t3js-localization-option" type="radio" name="mode" id="${provider.identifier}" value=${provider.identifier}>
           <label class="btn btn-default btn-block-vertical" for="${provider.identifier}" data-action="${provider.identifier}">
             <typo3-backend-icon identifier=${provider.icon} size="large"></typo3-backend-icon>
