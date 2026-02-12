@@ -20,10 +20,10 @@ shared base extension as common ground.
 
 ## Compatibility
 
-| Branch | Version   | TYPO3     | PHP                                     |
-|--------|-----------|-----------|-----------------------------------------|
-| main   | 1.0.x-dev | v12 + v13 | 8.1, 8.2, 8.3, 8.4 (depending on TYPO3) |
-| 1      | ^1        | v12 + v13 | 8.1, 8.2, 8.3, 8.4 (depending on TYPO3) |
+| Branch | Version       | TYPO3     | PHP                                     |
+|--------|---------------|-----------|-----------------------------------------|
+| main   | 2.0.x-dev     | v13       | 8.2, 8.3, 8.4, 8.5 (depending on TYPO3) |
+| 1      | ^1, 1.0.x-dev | v12 + v13 | 8.1, 8.2, 8.3, 8.4 (depending on TYPO3) |
 
 ## Installation
 

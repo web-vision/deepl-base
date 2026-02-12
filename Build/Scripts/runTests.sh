@@ -52,26 +52,11 @@ copyJavaScriptSourcesToBuild() {
 }
 
 buildCoreJavaScriptFiles() {
-    if [[ "${CORE_VERSION}" -eq 13 ]]; then
-        "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -b ${CONTAINER_BIN} -s buildJavascript
-    else
-        "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -s buildJavascript
-    fi
+    "Build/buildsystem/core${CORE_VERSION}/Build/Scripts/runTests.sh" -b ${CONTAINER_BIN} -s buildJavascript
 }
 
 buildApplyCompiledFilesToResources() {
     echo ">> Copy compiled override JavaScripts back to resources folder ..."
-    if [[ "${CORE_VERSION}" -eq 12 ]]; then
-        # ensure folder exists
-#        mkdir -p "Resources/Public/JavaScript/Core${CORE_VERSION}/localization"
-        # copy files
-        cp -vf \
-            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization.js" \
-            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization.js"
-#        cp -vf \
-#            "./Build/buildsystem/core${CORE_VERSION}/typo3/sysext/backend/Resources/Public/JavaScript/localization/provider-list.js" \
-#            "Resources/Public/JavaScript/Core${CORE_VERSION}/localization/provider-list.js"
-    fi
     if [[ "${CORE_VERSION}" -eq 13 ]]; then
         # ensure folder exists
         mkdir -p "Resources/Public/JavaScript/Core${CORE_VERSION}/localization"
@@ -274,18 +259,17 @@ Options:
             - 15    maintained until 2027-11-11
             - 16    maintained until 2028-11-09
 
-    -t <12|13>
+    -t <13>
         Only with -s composerInstall|composerInstallMin|composerInstallMax
         Specifies the TYPO3 CORE Version to be used
-            - 12: use TYPO3 v12 (default)
-            - 13: use TYPO3 v13
+            - 13: use TYPO3 v13 (default)
 
-    -p <8.1|8.2|8.3|8.4>
+    -p <8.2|8.3|8.4|8.5>
         Specifies the PHP minor version to be used
-            - 8.1: use PHP 8.1 (default)
-            - 8.2: use PHP 8.2
+            - 8.2: use PHP 8.2 (default)
             - 8.3: use PHP 8.3
             - 8.4: use PHP 8.4
+            - 8.5: use PHP 8.5
 
     -x
         Only with -s functional|unit|unitRandom
@@ -316,31 +300,18 @@ Options:
         Show this help.
 
 Examples:
-    # Run all core unit tests using PHP 8.1
+    # Run all core unit tests using PHP 8.2
     ./Build/Scripts/runTests.sh
     ./Build/Scripts/runTests.sh -s unit
 
     # Run all core units tests and enable xdebug (have a PhpStorm listening on port 9003!)
-    ./Build/Scripts/runTests.sh -x
-
-    # Run unit tests in phpunit verbose mode with xdebug on PHP 8.1 and filter for test canRetrieveValueWithGP
-    ./Build/Scripts/runTests.sh -x -p 8.1 -e "-v --filter canRetrieveValueWithGP"
-
-    # Run functional tests in phpunit with a filtered test method name in a specified file
-    # example will currently execute two tests, both of which start with the search term
-    ./Build/Scripts/runTests.sh -s functional -e "--filter deleteContent" typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php
+    ./Build/Scripts/runTests.sh -s unit -x
 
     # Run functional tests on postgres with xdebug, php 8.1 and execute a restricted set of tests
-    ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres typo3/sysext/core/Tests/Functional/Authentication
+    ./Build/Scripts/runTests.sh -x -p 8.1 -s functional -d postgres Tests/Functional/LocalizationControllerTest.php
 
     # Run functional tests on postgres 11
     ./Build/Scripts/runTests.sh -s functional -d postgres -k 11
-
-    # Run restricted set of application acceptance tests
-    ./Build/Scripts/runTests.sh -s acceptance typo3/sysext/core/Tests/Acceptance/Application/Login/BackendLoginCest.php:loginButtonMouseOver
-
-    # Run installer tests of a new instance on sqlite
-    ./Build/Scripts/runTests.sh -s acceptanceInstall -d sqlite
 EOF
 }
 
@@ -352,10 +323,10 @@ fi
 
 # Option defaults
 TEST_SUITE="unit"
-CORE_VERSION="12"
-CORE_JAVASCRIPT_CHECKOUT="12.4.0"
+CORE_VERSION="13"
+CORE_JAVASCRIPT_CHECKOUT="13.4.0"
 DBMS="sqlite"
-PHP_VERSION="8.1"
+PHP_VERSION="8.2"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 PHPUNIT_RANDOM=""
@@ -393,20 +364,16 @@ while getopts "a:b:s:d:i:p:t:xy:o:nhu" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2|8.3|8.4)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.2|8.3|8.4|8.5)$ ]]; then
                 INVALID_OPTIONS+=("p ${OPTARG}")
             fi
             ;;
         t)
             CORE_VERSION=${OPTARG}
-            if ! [[ ${CORE_VERSION} =~ ^(12|13)$ ]]; then
+            if ! [[ ${CORE_VERSION} =~ ^(13)$ ]]; then
                 INVALID_OPTIONS+=("t ${OPTARG}")
             fi
-            if [[ "${CORE_VERSION}" == "12" ]]; then
-                CORE_JAVASCRIPT_CHECKOUT="v12.4.0"
-            else
-                CORE_JAVASCRIPT_CHECKOUT="v13.4.0"
-            fi
+            CORE_JAVASCRIPT_CHECKOUT="v13.4.0"
             ;;
         x)
             PHP_XDEBUG_ON=1
@@ -450,7 +417,7 @@ fi
 
 handleDbmsOptions
 
-COMPOSER_ROOT_VERSION="1.0.x-dev"
+COMPOSER_ROOT_VERSION="2.0.x-dev"
 CONTAINER_INTERACTIVE="-it --init"
 HOST_UID=$(id -u)
 USERSET=""

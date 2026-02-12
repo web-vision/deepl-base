@@ -50,7 +50,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [ '8.2', '8.3', '8.4' ]
+        php-version: [ '8.2', '8.3', '8.4', '8.5' ]
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
@@ -77,20 +77,20 @@ jobs:
 
       - name: "Functional MariaDB 10.5 mysqli"
         run: |
-          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a mysqli
+          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a mysqli -i 10.5
 
-      - name: "Functional MariaDB 10.5 pdo_mysql"
+      - name: "Functional MariaDB 10.11 pdo_mysql"
         run: |
-          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a pdo_mysql
+          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a pdo_mysql -i 10.11
 
       - name: "Functional MySQL 8.0 mysqli"
         run: |
-          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a mysqli
+          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mysql -a mysqli -i 8.0
 
-      - name: "Functional MySQL 8.0 pdo_mysql"
+      - name: "Functional MySQL 8.4 pdo_mysql"
         run: |
-          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mariadb -a pdo_mysql
+          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d mysql -a pdo_mysql -i 8.4
 
       - name: "Functional PostgresSQL 10"
         run: |
-          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d postgres
+          Build/Scripts/runTests.sh -t 13 -p ${{ matrix.php-version }} -s functional -d postgres -i 10
