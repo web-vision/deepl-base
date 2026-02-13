@@ -36,7 +36,7 @@ Install with your flavour:
 We prefer composer installation:
 
 ```bash
-composer require 'web-vision/deepl-base':'1.*.*@dev'
+composer require 'web-vision/deepl-base':'^2'
 ```
 
 > [!NOTE]
@@ -45,7 +45,8 @@ composer require 'web-vision/deepl-base':'1.*.*@dev'
 
 ```shell
 composer config minimum-stability "dev" \
-&& composer config "prefer-stable" true
+&& composer config "prefer-stable" true \
+&& composer require 'web-vision/deepl-base':'2.*.*@dev'
 ```
 
 ## Documentation
