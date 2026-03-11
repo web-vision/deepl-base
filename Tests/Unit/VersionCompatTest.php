@@ -10,7 +10,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class VersionCompatTest extends UnitTestCase
 {
-    private const ALLOWED_MAJOR_VERSIONS = [12, 13];
+    private const ALLOWED_MAJOR_VERSIONS = [13];
 
     #[Test]
     public function allowedMajorTypo3Version(): void
