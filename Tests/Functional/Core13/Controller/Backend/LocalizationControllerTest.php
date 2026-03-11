@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebVision\Deepl\Base\Tests\Functional\Controller\Backend;
+namespace WebVision\Deepl\Base\Tests\Functional\Core13\Controller\Backend;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use SBUERK\TYPO3\Testing\SiteHandling\SiteBasedTestTrait;
 use SBUERK\TYPO3\Testing\TestCase\FunctionalTestCase;
@@ -14,7 +15,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use WebVision\Deepl\Base\Controller\Backend\LocalizationController;
+use WebVision\Deepl\Base\Core13\Controller\Backend\LocalizationController;
 use WebVision\Deepl\Base\Localization\LocalizationModesCollection;
 
 final class LocalizationControllerTest extends FunctionalTestCase
@@ -31,12 +32,21 @@ final class LocalizationControllerTest extends FunctionalTestCase
         'web-vision/deepl-base',
     ];
 
+    #[Group('not-core-13')]
     #[Test]
-    public function canBeRetrievedFromDependencyInjectionContainer(): void
+    public function cannotBeRetrievedFromDependencyInjectionContainerForTypo3v14(): void
+    {
+        $this->expectException(\Exception::class);
+    }
+
+    #[Group('not-core-14')]
+    #[Test]
+    public function canBeRetrievedFromDependencyInjectionContainerForTypo3v13(): void
     {
         $this->get(LocalizationController::class);
     }
 
+    #[Group('not-core-14')]
     #[Test]
     public function canBeCreatedWithNewKeywordRetrievingDependencyFromDIContainer(): void
     {
@@ -144,6 +154,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
         ];
     }
 
+    #[Group('not-core-14')]
     #[DataProvider('dispatchGetLocalizationModesEventReturnsExpectedDefaultModesBasedOnPageSetupDataSets')]
     #[Test]
     public function dispatchGetLocalizationModesEventReturnsExpectedDefaultModesBasedOnPageSetup(
@@ -222,6 +233,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
      *     uidList: int[]
      * } $getParams
      */
+    #[Group('not-core-14')]
     #[DataProvider('translationModesDataProvider')]
     #[Test]
     public function translationModesWorkAsExpected(

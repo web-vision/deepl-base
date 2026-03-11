@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebVision\Deepl\Base\Controller\Backend;
+namespace WebVision\Deepl\Base\Core13\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

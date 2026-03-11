@@ -7,6 +7,7 @@ namespace WebVision\Deepl\Base\Event;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use WebVision\Deepl\Base\Core13\Controller\Backend\LocalizationController;
 use WebVision\Deepl\Base\Localization\LocalizationModesCollection;
 
 /**
@@ -14,6 +15,10 @@ use WebVision\Deepl\Base\Localization\LocalizationModesCollection;
  * available localization modes displayed within the localization modal in PageLayout module.
  *
  * Can be used to add additional localization modes or remove previously registered modes.
+ *
+ * @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
+ *             and should be resort to TYPO3 v14 localization handler feature provided by the
+ *             TYPO3 Core.
  */
 final class GetLocalizationModesEvent
 {

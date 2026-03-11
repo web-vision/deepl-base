@@ -8,15 +8,15 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'web-vision GmbH',
     'author_email' => 'hello@web-vision.de',
     'state' => 'stable',
-    'version' => '1.0.3',
+    'version' => '2.0.0',
     'constraints' => [
         'depends' => [
-            'php' => '8.1.0-8.4.99',
-            'typo3' => '12.4.0-13.4.99',
-            'backend' => '12.4.0-13.4.99',
-            'extbase' => '12.4.0-13.4.99',
-            'fluid' => '12.4.0-13.4.99',
-            'setup' => '12.4.0-13.4.99',
+            'php' => '8.1.0-8.5.99',
+            'typo3' => '13.4.10-13.4.99',
+            'backend' => '13.4.10-13.4.99',
+            'extbase' => '13.4.10-13.4.99',
+            'fluid' => '13.4.10-13.4.99',
+            'setup' => '13.4.10-13.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],
@@ -24,6 +24,7 @@ $EM_CONF[$_EXTKEY] = [
     'autoload' => [
         'psr-4' => [
             'WebVision\\Deepl\\Base\\' => 'Classes',
+            'WebVision\\Deepl\\Base\\Core13\\Controller\\Backend\\' => 'Core13/Classes',
         ],
     ],
 ];

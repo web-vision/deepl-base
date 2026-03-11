@@ -5,16 +5,25 @@ declare(strict_types=1);
 namespace WebVision\Deepl\Base\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use WebVision\Deepl\Base\Event\LocalizationProcessPrepareDataHandlerCommandMapEvent;
 
 /**
  * Prepare DataHandler command map for default TYPO3 localization modes, dispatched in
- * {@see \WebVision\Deepl\Base\Controller\Backend\LocalizationController::customProcess()}.
+ * {@see \WebVision\Deepl\Base\Core13\Controller\Backend\LocalizationController::customProcess()}.
+ *
+ * @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
+ *             and should be resort to TYPO3 v14 localization handler feature provided by the
+ *             TYPO3 Core.
  */
 final class PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes
 {
     public function __invoke(LocalizationProcessPrepareDataHandlerCommandMapEvent $event): void
     {
+        if ((new Typo3Version())->getMajorVersion() > 13) {
+            // Not needed in TYPO v14 or newer.
+            return;
+        }
         if (!in_array($event->getLocalizationMode()->identifier, [LocalizationController::ACTION_COPY, LocalizationController::ACTION_LOCALIZE], true)) {
             // Not responsible, early return.
             return;
