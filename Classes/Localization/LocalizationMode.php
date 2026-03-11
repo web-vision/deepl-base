@@ -6,6 +6,7 @@ namespace WebVision\Deepl\Base\Localization;
 
 /**
  * Holds essential values for localization modal localization mode handling.
+ * @depreacted used only for TYPO3 v13 compatibility, not needed for TYPO3 v14 and onwards.
  */
 final class LocalizationMode implements \JsonSerializable
 {

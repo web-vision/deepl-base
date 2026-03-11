@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebVision\Deepl\Base\Event;
 
-use WebVision\Deepl\Base\Controller\Backend\LocalizationController;
+use WebVision\Deepl\Base\Core13\Controller\Backend\LocalizationController;
 use WebVision\Deepl\Base\Localization\LocalizationMode;
 use WebVision\Deepl\Base\Localization\LocalizationModesCollection;
 
@@ -14,6 +14,10 @@ use WebVision\Deepl\Base\Localization\LocalizationModesCollection;
  *
  * Allows to implement custom localization modes in the localization model and handling together with
  * the PSR-14 {@see GetLocalizationModesEvent} also dispatched in {@see LocalizationController}.
+ *
+ * @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
+ *             and should be resort to TYPO3 v14 localization handler feature provided by the
+ *             TYPO3 Core.
  */
 final class LocalizationProcessPrepareDataHandlerCommandMapEvent
 {

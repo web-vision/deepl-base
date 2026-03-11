@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
  * @implements \Iterator<string, LocalizationMode>
+ * @depreacted used only for TYPO3 v13 compatibility, not needed for TYPO3 v14 and onwards.
  */
 final class LocalizationModesCollection implements \JsonSerializable, \Countable, \Iterator
 {
