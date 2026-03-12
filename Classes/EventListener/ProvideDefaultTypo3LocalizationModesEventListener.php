@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebVision\Deepl\Base\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use WebVision\Deepl\Base\Event\GetLocalizationModesEvent;
@@ -23,6 +24,9 @@ use WebVision\Deepl\Base\Localization\LocalizationMode;
  */
 final class ProvideDefaultTypo3LocalizationModesEventListener
 {
+    #[AsEventListener(
+        identifier: 'deepl-base/determine-default-typo3-localization-modes',
+    )]
     public function __invoke(GetLocalizationModesEvent $event): void
     {
         if ((new Typo3Version())->getMajorVersion() > 13) {

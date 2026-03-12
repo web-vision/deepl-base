@@ -6,32 +6,4 @@ services:
 
   WebVision\Deepl\Base\:
     resource: '../Classes/*'
-    exclude:
-      - '../Classes/Domain/Model'
 
-  # @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
-  #             and should be resort to TYPO3 v14 localization handler feature provided by the
-  #             TYPO3 Core.
-  WebVision\Deepl\Base\EventListener\ProvideDefaultTypo3LocalizationModesEventListener:
-    tags:
-      - name: 'event.listener'
-        identifier: 'deepl-base/determine-default-typo3-localization-modes'
-        event: WebVision\Deepl\Base\Event\GetLocalizationModesEvent
-
-  # @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
-  #             and should be resort to TYPO3 v14 localization handler feature provided by the
-  #             TYPO3 Core.
-  WebVision\Deepl\Base\EventListener\PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes:
-    tags:
-      - name: 'event.listener'
-        identifier: 'deepl-base/process-default-typo3-localization-modes'
-        event: WebVision\Deepl\Base\Event\LocalizationProcessPrepareDataHandlerCommandMapEvent
-
-  # @depreacted used only for TYPO3 v13 compatibility and will not be dispatched for TYPO3 v14
-  #             and should be resort to TYPO3 v14 localization handler feature provided by the
-  #             TYPO3 Core.
-  WebVision\Deepl\Base\EventListener\DefaultTranslationDropdownEventListener:
-    tags:
-      - name: 'event.listener'
-        identifier: 'deepl-base/default-translation'
-        event: WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent

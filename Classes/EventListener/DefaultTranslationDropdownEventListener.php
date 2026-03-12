@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebVision\Deepl\Base\EventListener;
 
+use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent;
 
@@ -15,6 +16,9 @@ use WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent;
  */
 final class DefaultTranslationDropdownEventListener
 {
+    #[AsEventListener(
+        identifier: 'deepl-base/default-translation',
+    )]
     public function __invoke(ModifyInjectVariablesViewHelperEvent $event): void
     {
         if ((new Typo3Version())->getMajorVersion() > 13) {
