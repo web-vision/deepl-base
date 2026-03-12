@@ -33,8 +33,7 @@ final class GetLocalizationModesEvent
         private readonly int $languageId,
         private readonly LocalizationModesCollection $modes,
         private readonly LanguageService $languageService,
-    ) {
-    }
+    ) {}
 
     public function getSite(): Site
     {

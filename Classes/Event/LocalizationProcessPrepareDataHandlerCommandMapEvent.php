@@ -35,8 +35,7 @@ final class LocalizationProcessPrepareDataHandlerCommandMapEvent
         private readonly int $destLanguageId,
         private readonly array $uidList,
         private array $cmd,
-    ) {
-    }
+    ) {}
 
     public function getAction(): string
     {

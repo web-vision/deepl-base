@@ -87,10 +87,10 @@ final class LocalizationModesCollection implements \JsonSerializable, \Countable
     private function sort(): void
     {
         $this->modes = array_map(
-            static fn ($value) => $value['mode'],
+            static fn($value) => $value['mode'],
             (new DependencyOrderingService())->orderByDependencies(
                 array_map(
-                    static fn (LocalizationMode $mode) => ['before' => $mode->before, 'after' => $mode->after, 'mode' => $mode],
+                    static fn(LocalizationMode $mode) => ['before' => $mode->before, 'after' => $mode->after, 'mode' => $mode],
                     $this->modes
                 ),
             ),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebVision\Deepl\Base\Tests\Functional\ViewHelpers;
 
-use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Information\Typo3Version;
@@ -52,9 +51,9 @@ final class ExtensionActiveViewHelperTest extends FunctionalTestCase
     }
 
     /**
-     * @return Generator<string, array{template: string, variables: array<string, mixed>, expected: string}>
+     * @return \Generator<string, array{template: string, variables: array<string, mixed>, expected: string}>
      */
-    public static function renderDataProvider(): Generator
+    public static function renderDataProvider(): \Generator
     {
         yield 'extension name empty, await else' => [
             'template' => '<deeplbase:extensionActive extension="" then="thenArgument" else="elseArgument" />',

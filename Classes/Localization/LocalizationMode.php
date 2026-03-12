@@ -23,8 +23,7 @@ final class LocalizationMode implements \JsonSerializable
         public array $before = [],
         public array $after = [],
         public ?array $restrictedSourceLanguageIds = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array{
