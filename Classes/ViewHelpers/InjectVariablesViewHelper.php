@@ -39,6 +39,7 @@ final class InjectVariablesViewHelper extends AbstractViewHelper
                 1748872475,
             );
         }
+        /** @var ModifyInjectVariablesViewHelperEvent $event */
         $event = $this->eventDispatcher->dispatch(new ModifyInjectVariablesViewHelperEvent(
             identifier: $identifier,
             globalVariableProvider: $globalVariableProvider,

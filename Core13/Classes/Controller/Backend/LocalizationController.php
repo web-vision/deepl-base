@@ -164,7 +164,8 @@ final class LocalizationController extends Typo3LocalizationController
         ];
         $action = $params['action'];
         $uidList = $params['uidList'];
-        $cmd = $this->eventDispatcher->dispatch(new LocalizationProcessPrepareDataHandlerCommandMapEvent(
+        /** @var LocalizationProcessPrepareDataHandlerCommandMapEvent $event */
+        $event = $this->eventDispatcher->dispatch(new LocalizationProcessPrepareDataHandlerCommandMapEvent(
             $localizationModes,
             $localizationMode,
             $action,
@@ -173,7 +174,8 @@ final class LocalizationController extends Typo3LocalizationController
             $destLanguageId,
             $uidList,
             $cmd,
-        ))->getCmd();
+        ));
+        $cmd = $event->getCmd();
 
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
@@ -194,7 +196,8 @@ final class LocalizationController extends Typo3LocalizationController
         int $pageUid,
         int $languageUid,
     ): LocalizationModesCollection {
-        return $this->eventDispatcher->dispatch(new GetLocalizationModesEvent(
+        /** @var GetLocalizationModesEvent $event */
+        $event = $this->eventDispatcher->dispatch(new GetLocalizationModesEvent(
             site: $site,
             siteLanguage: $siteLanguage,
             pageTsConfig: $pageTsConfig,
@@ -202,7 +205,8 @@ final class LocalizationController extends Typo3LocalizationController
             languageId: $languageUid,
             modes: $modes,
             languageService: $languageService,
-        ))->getModes();
+        ));
+        return $event->getModes();
     }
 
     private function getLanguageService(): LanguageService

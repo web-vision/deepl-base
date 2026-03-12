@@ -14,6 +14,7 @@ final class LocalizationModesCollectionTest extends UnitTestCase
     #[Test]
     public function emptyCollectionCanBeCreated(): void
     {
+        /** @phpstan-ignore new.resultUnused */
         new LocalizationModesCollection();
     }
 
