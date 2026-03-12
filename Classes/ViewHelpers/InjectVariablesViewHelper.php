@@ -20,8 +20,7 @@ final class InjectVariablesViewHelper extends AbstractViewHelper
 
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function initializeArguments(): void
     {

@@ -18,8 +18,7 @@ final class ModifyInjectVariablesViewHelperEvent
         private readonly string $identifier,
         private readonly VariableProviderInterface $globalVariableProvider,
         private readonly VariableProviderInterface $localVariableProvider,
-    ) {
-    }
+    ) {}
 
     public function getIdentifier(): string
     {
