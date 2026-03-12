@@ -52,7 +52,7 @@ final class ProvideDefaultTypo3LocalizationModesEventListener
         }
 
         if ($modes !== []) {
-            $event->getModes()->add(...array_values($modes));
+            $event->getModes()->add(...$modes);
         }
     }
 
