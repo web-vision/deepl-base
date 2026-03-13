@@ -17,3 +17,16 @@ parameters:
 
   excludePaths:
     - ../../../.Build/*
+    # excluded - TYPO3 v13 only
+    - ../../../Classes/Event/GetLocalizationModesEvent.php
+    # excluded - TYPO3 v13 only
+    - ../../../Classes/Event/LocalizationProcessPrepareDataHandlerCommandMapEvent.php
+    # excluded - TYPO3 v13 only
+    - ../../../Classes/EventListener/PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes.php
+    # excluded - TYPO3 v13 only
+    - ../../../Classes/EventListener/ProvideDefaultTypo3LocalizationModesEventListener.php
+    # excluded - TYPO3 v13 only
+    - ../../../Tests/Functional/Core13/Controller/Backend/LocalizationControllerTest.php
+    # excluded - needs to be fixed for TYPO3 v14 due to fluid changes but not used currently - delayed
+    - ../../../Classes/ViewHelpers/InjectVariablesViewHelper.php
+

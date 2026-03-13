@@ -37,6 +37,7 @@ final class LocalizationControllerTest extends FunctionalTestCase
     public function cannotBeRetrievedFromDependencyInjectionContainerForTypo3v14(): void
     {
         $this->expectException(\Exception::class);
+        $this->get(LocalizationController::class);
     }
 
     #[Group('not-core-14')]
