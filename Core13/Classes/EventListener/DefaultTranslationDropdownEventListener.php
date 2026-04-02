@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WebVision\Deepl\Base\EventListener;
+namespace WebVision\Deepl\Base\Core13\EventListener;
 
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use WebVision\Deepl\Base\Event\ViewHelpers\ModifyInjectVariablesViewHelperEvent;
 
 /**
@@ -21,10 +20,8 @@ final class DefaultTranslationDropdownEventListener
     )]
     public function __invoke(ModifyInjectVariablesViewHelperEvent $event): void
     {
-        if ((new Typo3Version())->getMajorVersion() > 13) {
-            // Not needed in TYPO v14 or newer.
-            return;
-        }
+        // Note that this identifier / ViewHelper is only included in TYPO3 v13
+        // backend template overrides and therefore restricts this already down.
         if ($event->getIdentifier() !== 'languageTranslationDropdown') {
             return;
         }

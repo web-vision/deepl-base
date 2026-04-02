@@ -10,14 +10,22 @@ Following class(s) has been moved to a new namespace:
 * `\WebVision\Deepl\Base\Controller\Backend\LocalizationController` to
   `\WebVision\Deepl\Base\Core13\Controller\Backend\LocalizationController`
 
+* `\WebVision\Deepl\Base\EventListener\DefaultTranslationDropdownEventListener`
+  to `\WebVision\Deepl\Base\Core13\EventListener\DefaultTranslationDropdownEventListener`
+
+* `\WebVision\Deepl\Base\EventListener\PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes`
+  to `\WebVision\Deepl\Base\Core13\EventListener\PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes`
+
+* `\WebVision\Deepl\Base\EventListener\ProvideDefaultTypo3LocalizationModesEventListener`
+  to `\WebVision\Deepl\Base\Core13\EventListener\ProvideDefaultTypo3LocalizationModesEventListener`
+
 Following classes has been marked as deprecated and are not used in TYPO3 v14
-albeit being available and kept to minimize fatal breaking errors:
+albeit being available and kept to minimize fatal breaking errors and reduce
+required adoption in packages using `EXT:deepl_base`:
 
 * `\WebVision\Deepl\Base\Event\GetLocalizationModesEvent`
 * `\WebVision\Deepl\Base\Event\LocalizationProcessPrepareDataHandlerCommandMapEvent`
-* `\WebVision\Deepl\Base\EventListener\DefaultTranslationDropdownEventListener`
-* `\WebVision\Deepl\Base\EventListener\PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationModes`
-* `\WebVision\Deepl\Base\EventListener\ProvideDefaultTypo3LocalizationModesEventListener`
+
 
 Further, backend template overrides has been moved into a dedicated folder
 and related PageTsConfig option has been adjusted and nested into a condition

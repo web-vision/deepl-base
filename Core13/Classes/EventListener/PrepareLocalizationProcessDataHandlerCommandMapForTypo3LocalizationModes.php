@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebVision\Deepl\Base\EventListener;
+namespace WebVision\Deepl\Base\Core13\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use WebVision\Deepl\Base\Event\LocalizationProcessPrepareDataHandlerCommandMapEvent;
 
 /**
@@ -24,10 +23,6 @@ final class PrepareLocalizationProcessDataHandlerCommandMapForTypo3LocalizationM
     )]
     public function __invoke(LocalizationProcessPrepareDataHandlerCommandMapEvent $event): void
     {
-        if ((new Typo3Version())->getMajorVersion() > 13) {
-            // Not needed in TYPO v14 or newer.
-            return;
-        }
         if (!in_array($event->getLocalizationMode()->identifier, [LocalizationController::ACTION_COPY, LocalizationController::ACTION_LOCALIZE], true)) {
             // Not responsible, early return.
             return;

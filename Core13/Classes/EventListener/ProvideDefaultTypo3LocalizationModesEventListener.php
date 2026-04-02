@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebVision\Deepl\Base\EventListener;
+namespace WebVision\Deepl\Base\Core13\EventListener;
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use WebVision\Deepl\Base\Event\GetLocalizationModesEvent;
 use WebVision\Deepl\Base\Localization\LocalizationMode;
@@ -29,10 +28,6 @@ final class ProvideDefaultTypo3LocalizationModesEventListener
     )]
     public function __invoke(GetLocalizationModesEvent $event): void
     {
-        if ((new Typo3Version())->getMajorVersion() > 13) {
-            // Not needed in TYPO v14 or newer.
-            return;
-        }
         $modes = [];
         if ($this->allowTranslate($event)) {
             $modes[] = new LocalizationMode(
