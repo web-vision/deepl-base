@@ -57,7 +57,10 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "deepl_base",
-            "web-dir": ".Build/Web"
+            "web-dir": ".Build/Web",
+            "Package": {
+                "providesPackages": []
+            }
         },
         "branch-alias": {
             "dev-main": "2.0.x-dev"

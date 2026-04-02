@@ -60,6 +60,9 @@ jobs:
       - name: Install tailor
         run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
 
+      - name: Set version to composer
+        run: composer config version "${{ env.version }}"
+
       # Note that step will fail when `env.version` does not match the `ext_emconf.php` version.
       - name: Create local TER package upload artifact
         run: |
