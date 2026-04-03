@@ -1,0 +1,117 @@
+@package typo3/cms-core
+@label [WIP][BUGFIX] Disarm `ext_emconf.php` deprecation for functional tests
+@link https://review.typo3.org/c/Packages/TYPO3.CMS/+/93531
+@after typo3-cms-core_93530_bugfix-avoid-undefined-property_-stdclass__version-warning.patch
+@version ^14.2
+
+From 65f7a9372e883f6ea67730225a8aa89484da8804 Mon Sep 17 00:00:00 2001
+From: Stefan Bürk <stefan@buerk.tech>
+Date: Fri, 03 Apr 2026 02:05:08 +0200
+Subject: [PATCH] [WIP][BUGFIX] Disarm `ext_emconf.php` deprecation for functional tests
+
+-----------------------------------------------------------------
+
+[ ] Verify this change for extension development using composer
+    patches.
+
+[ ] Verify against project functional testing with and without
+    this change.
+
+[ ] Modify the original changelog entry to make the caveats and
+    enforced requirements for extension devlopment more precise
+    and clear to mitigate the **to low risk** sounding of it.
+
+-----------------------------------------------------------------
+
+Casual extension development commonly uses composer to install
+development dependencies like the `typo3/testing-framework`,
+`phpunit/phpunit` and other tools as quality guards and also
+executes functional tests based on `typo3/testing-framework`
+based implementation.
+
+That symlinks the root extension into the classic mode instances
+including the `ext_emconf.php` file and ending up with failing
+tests with the deprecation message introduced with [1]:
+
+  Extension "some_extension_key" is having a ext_emconf.php file,
+  which is deprecated. Use composer.json exclusively instead.
+
+This forces extension authors to have a `version` set in the
+`composer.json` at any time, something which is
+
+a) not required and enforced for TYPO3 composer mode instances
+b) not recommended by `composer` if not really needed.
+
+Having the mixed handling mode is specific for testing purpose
+only and enforcing to set and handle not recommended `version`
+**can not** and **must not** be the solution to enforce here.
+
+This change provides a first approach to mitigate this only
+within the testing context taken from casual and recommended
+testing setups and keeps the generic deprecation handling in
+place like defined and implemented for #108345 and #96388 [1].
+
+It may be not the best solution, but it is at least a working
+solution. Other implementation welcome, but pushed to have it
+for the multiple extension development in place and possible
+also for project testing (not verified yet).
+
+An alternative approach could be to mitigate this within the
+`typo3/testing-framework` by providing `true` as the fourth
+argument for `new Package()` calls for the composer package
+management allowing the `ext_emconf.php` and silencing it
+only in that specific context. Possible the better way to
+resolve this issue.
+
+[1] https://review.typo3.org/c/Packages/TYPO3.CMS/+/91908
+
+Resolves: #?
+Related: #109473
+Related: #108345
+Related: #96388
+Releases: main
+Change-Id: Ied3812496443b0c8b3bec06923ee12617428b7af
+---
+
+diff --git a/Classes/Package/PackageManager.php b/Classes/Package/PackageManager.php
+index dd9b427..8f4875e 100644
+--- a/Classes/Package/PackageManager.php
++++ b/Classes/Package/PackageManager.php
+@@ -922,7 +922,9 @@
+         $packageKey = $this->getPackageKeyFromManifest($composerManifest, $manifestPath);
+         $extensionManagerConfiguration = $this->getExtensionEmConf($manifestPath, $packageKey);
+         if ($extensionManagerConfiguration !== null) {
+-            trigger_error(sprintf('Extension "%s" is having a ext_emconf.php file, which is deprecated. Use composer.json exclusively instead.', $packageKey), E_USER_DEPRECATED);
++            if (!$this->isTestingContext()) {
++                trigger_error(sprintf('Extension "%s" is having a ext_emconf.php file, which is deprecated. Use composer.json exclusively instead.', $packageKey), E_USER_DEPRECATED);
++            }
+             $composerManifest = $this->mapExtensionManagerConfigurationToComposerManifest(
+                 $packageKey,
+                 $extensionManagerConfiguration,
+@@ -1304,4 +1306,26 @@
+             $this->saveToPackageCache();
+         }
+     }
++
++    /**
++     * Respecting casual extension development executing functional tests using the `typo3/testing-framework`
++     * and providing `ext_emconf.php` needing to support TYPO3 v13 the same way has no change to avoid the
++     * deprecation and therefor failing functional tests. To mitigate this, we check for the testing context
++     * directly on environment variable `TYPO3_CONTEXT` commonly set within the functional test configuration
++     * file, at least in case the template files provided by the `typo3/testing-framework` have been used.
++     *
++     * Returns `true` if expected testing context environment is matched, otherwise `false`.
++     *
++     * @todo Find a way to harden this checking that `typo3/testing-framework` is installed.
++     */
++    private function isTestingContext(): bool
++    {
++        // We cannot use `Environment::getContext()->isTesting()` here because this is executed
++        // before the functional test instance is created and therefore does not have the
++        // environment bootstrapped yet. Fallback to use `TYPO3_CONTEXT` directly commonly
++        // set within the phpunit functional test configuration file, at least in case the
++        // template files provided by the `typo3/testing-framework` are used.
++        return is_string(getenv('TYPO3_CONTEXT'))
++            && mb_strtolower(getenv('TYPO3_CONTEXT')) === 'testing';
++    }
+ }
