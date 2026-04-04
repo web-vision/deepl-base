@@ -1,7 +1,7 @@
 @package typo3/cms-core
 @label [BUGFIX] Avoid `Undefined property: stdClass::$version` warning
 @link https://review.typo3.org/c/Packages/TYPO3.CMS/+/93530
-@version 14.2.0
+@version ~14.2.0
 
 From 0672a9436796d0b8cc047fe29e611a654dbea6e7 Mon Sep 17 00:00:00 2001
 From: Stefan Bürk <stefan@buerk.tech>
