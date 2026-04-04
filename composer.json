@@ -101,7 +101,7 @@
         "typo3/cms-styleguide": "^13.4.10 || 14.2.*@dev",
         "typo3/cms-tstemplate": "^13.4.10 || 14.2.*@dev",
         "typo3/cms-workspaces": "^13.4.10 || 14.2.*@dev",
-        "typo3/testing-framework": "^9.4.0",
+        "typo3/testing-framework": "^9.5.0",
         "vaimo/composer-patches": "^6.0.1"
     },
     "autoload": {
