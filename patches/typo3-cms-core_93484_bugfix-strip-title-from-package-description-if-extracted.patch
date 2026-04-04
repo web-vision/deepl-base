@@ -2,7 +2,7 @@
 @label [BUGFIX] Strip title from package description if extracted
 @link https://review.typo3.org/c/Packages/TYPO3.CMS/+/93484
 @version ~14.2.0
-@after patches/typo3-cms-core_93530_bugfix-avoid-undefined-property_-stdclass__version-warning.patch
+@after typo3-cms-core_93530_bugfix-avoid-undefined-property_-stdclass__version-warning.patch
 
 From 17f8256acba6eb1c5b4b3e2732b63dc891279ad0 Mon Sep 17 00:00:00 2001
 From: Benjamin Kott <benjamin.kott@outlook.com>

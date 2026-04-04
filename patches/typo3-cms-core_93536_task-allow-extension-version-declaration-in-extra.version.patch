@@ -2,7 +2,7 @@
 @label [TASK] Allow extension version declaration in extra.version
 @link https://review.typo3.org/c/Packages/TYPO3.CMS/+/93536
 @version ~14.2.0
-@after patches/typo3-cms-core_93484_bugfix-strip-title-from-package-description-if-extracted.patch
+@after typo3-cms-core_93484_bugfix-strip-title-from-package-description-if-extracted.patch
 
 From dcee72fe2e0ffb097d570d626e69c201ad05d403 Mon Sep 17 00:00:00 2001
 From: Helmut Hummel <typo3@helhum.io>
