@@ -1,7 +1,7 @@
 {
     "name": "web-vision/deepl-base",
     "type": "typo3-cms-extension",
-    "description": "TYPO3 Extension providing shared things across deepl related extensions, for example a shared point when overriding same TYPO3 backend fluid files are required and similar.",
+    "description": "DeepL Base - Provides shared things across deepl related extensions, for example a shared point when overriding same TYPO3 backend fluid files are required and similar.",
     "license": [
         "GPL-2.0-or-later"
     ],

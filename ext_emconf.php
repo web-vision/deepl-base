@@ -21,10 +21,4 @@ $EM_CONF[$_EXTKEY] = [
         'conflicts' => [],
         'suggests' => [],
     ],
-    'autoload' => [
-        'psr-4' => [
-            'WebVision\\Deepl\\Base\\' => 'Classes',
-            'WebVision\\Deepl\\Base\\Core13\\Controller\\Backend\\' => 'Core13/Classes',
-        ],
-    ],
 ];
