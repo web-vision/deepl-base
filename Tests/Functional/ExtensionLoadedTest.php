@@ -14,6 +14,10 @@ final class ExtensionLoadedTest extends FunctionalTestCase
 {
     private const ALLOWED_MAJOR_VERSIONS = [13, 14];
 
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-setup',
+    ];
+
     protected array $testExtensionsToLoad = [
         'web-vision/deepl-base',
     ];

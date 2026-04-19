@@ -18,6 +18,10 @@ final class ExtensionActiveViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-setup',
+    ];
+
     protected array $testExtensionsToLoad = [
         'web-vision/deepl-base',
     ];
