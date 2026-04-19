@@ -28,6 +28,10 @@ final class LocalizationControllerTest extends FunctionalTestCase
         'FR' => ['id' => 2, 'title' => 'Französisch', 'locale' => 'fr_FR.UTF-8'],
     ];
 
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-setup',
+    ];
+
     protected array $testExtensionsToLoad = [
         'web-vision/deepl-base',
     ];
