@@ -19,7 +19,7 @@ TYPO3 v12.
     extension and should be updated or forced to suitable version by
     them.
 
-    Refer to corresponding extension to update :guilabel:``EXT:deepl_base`
+    Refer to corresponding extension to update :guilabel:`EXT:deepl_base`
     along the way.
 
 Impact
@@ -35,7 +35,7 @@ Extension cannot be installed in that version but does not break otherwise.
 Affected installations
 ======================
 
-TYPO3 v12 or older instances with :guilabel:``EXT:deepl_base` version `1.x`.
+TYPO3 v12 or older instances with :guilabel:`EXT:deepl_base` version `1.x`.
 
 
 Migration
