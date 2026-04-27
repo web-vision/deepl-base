@@ -36,7 +36,7 @@ Install with your flavour:
 We prefer composer installation:
 
 ```bash
-composer require 'web-vision/deepl-base':'^2'
+composer require 'web-vision/deepl-base':'2.*.*@dev'
 ```
 
 > [!NOTE]
