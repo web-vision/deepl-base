@@ -21,23 +21,18 @@
             "role": "Maintainer"
         },
         {
-            "name": "Mark Houben",
-            "email": "markhouben91@gmail.com",
-            "role": "Developer"
+            "name": "Stefan Bürk",
+            "role": "Maintainer",
+            "email": "stefan@buerk.tech"
         },
         {
             "name": "Markus Hofmann",
             "email": "typo3@calien.de",
-            "role": "Developer"
+            "role": "Maintainer"
         },
         {
             "name": "Riad Zejnilagic Trumic",
-            "role": "Developer"
-        },
-        {
-            "name": "Stefan Bürk",
-            "role": "Developer",
-            "email": "stefan@buerk.tech"
+            "role": "Maintainer"
         }
     ],
     "support": {
