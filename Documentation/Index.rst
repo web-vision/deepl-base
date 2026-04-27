@@ -46,7 +46,10 @@ extensions and includes:
     revamped localization handling and therefore the implementation is untouched for
     it.
 
-*   :php`\WebVision\Deepl\Base\Imaging\IconProvider\DeeplBaseSvgIconProvider` to
+    ..  figure:: /Images/deepl-localization-mode.png
+        :alt: Select `Translate with DeepL` localization mode in TYPo3 v13
+
+*   :php:`\WebVision\Deepl\Base\Imaging\IconProvider\DeeplBaseSvgIconProvider` to
     allow providing `SVG Icons` for action not coming from a `SVG Sprite` with
     `icon-color` support (light and dark mode) .
 
