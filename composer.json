@@ -57,7 +57,7 @@
             "Package": {
                 "providesPackages": []
             },
-            "version": "2.0.0-dev"
+            "version": "2.0.0"
         },
         "branch-alias": {
             "dev-main": "2.0.x-dev"
