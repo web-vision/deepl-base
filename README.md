@@ -181,7 +181,7 @@ echo '>> Create release based on configuration' ; \
   echo "${DEV_VERSION}-dev" > VERSION && \
   git add . && \
   git commit -m "[TASK] Set dev version ${DEV_VERSION}" && \
-  git push --set-upstream origin set-dev-version-${DEV_VERSION} && \
+  git push --set-upstream origin set-version-${DEV_VERSION} && \
   gh pr create --fill --base ${RELEASE_BRANCH} --title "[TASK] Set dev version \"${DEV_VERSION}-dev\"" && \
   sleep 10 && \
   gh pr checks --watch --interval 2 && \
