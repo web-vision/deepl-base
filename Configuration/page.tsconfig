@@ -1,4 +1,3 @@
-
 [typo3.branch == "13.4"]
   # Registration of Fluid backend for TYPO3 v13 to provide variable injection using
   # ViewHelpers for the list module.
