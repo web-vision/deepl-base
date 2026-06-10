@@ -5,7 +5,7 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
 >
-<div class="col">
+<div class="form-group">
     <select class="form-select" name="createNewLanguage" data-global-event="change" data-action-navigate="$value">
         <f:for each="{context.newLanguageOptions}" as="languageName" key="url">
             <option value="{url}">{languageName}</option>
