@@ -50,6 +50,14 @@
 		"allow-plugins": {
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
+		},
+		"audit": {
+			"block-insecure": false,
+			"block-abandoned": false
+		},
+		"policy": {
+			"advisories": false,
+			"abandoned": false
 		}
 	},
 	"extra": {
