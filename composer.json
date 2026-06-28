@@ -64,7 +64,8 @@
 		"typo3/cms": {
 			"extension-key": "deepl_base",
 			"web-dir": ".Build/Web",
-			"app-dir": ".Build"
+			"app-dir": ".Build",
+			"version": "1.0.5"
 		},
 		"branch-alias": {
 			"dev-main": "1.x.x-dev"
