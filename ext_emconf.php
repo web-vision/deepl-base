@@ -3,7 +3,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'DeepL Base',
     'description' => 'Provides shared things across deepl related extensions, for example a shared point when overriding same TYPO3 backend fluid files are required and similar.',
-    'version' => '2.0.3',
+    'version' => '2.0.4',
     'category' => 'backend',
     'state' => 'stable',
     'author' => 'web-vision GmbH Team',
