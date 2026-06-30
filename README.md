@@ -173,7 +173,7 @@ echo '>> Create release based on configuration' ; \
   git remote prune origin && \
   git tag ${RELEASE_VERSION} && \
   git push origin ${RELEASE_VERSION} && \
-  echo ">> Post-release - set dev version: ${DEV_VRESION}-dev" && \
+  echo ">> Post-release - set dev version: ${DEV_VERSION}-dev" && \
   git checkout -b set-version-${DEV_VERSION} && \
   sed -i "s/^COMPOSER_ROOT_VERSION.*/COMPOSER_ROOT_VERSION=\"${DEV_VERSION}-dev\"/" Build/Scripts/runTests.sh && \
   tailor set-version ${DEV_VERSION} && \
