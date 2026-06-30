@@ -146,7 +146,7 @@ Prerequisites:
 ```shell
 echo '>> Prepare release pull-request' ; \
   RELEASE_BRANCH='main' ; \
-  RELEASE_VERSION="1.0.5"
+  RELEASE_VERSION="1.0.6"
   git checkout main && \
   git fetch --all && \
   git pull --rebase && \
