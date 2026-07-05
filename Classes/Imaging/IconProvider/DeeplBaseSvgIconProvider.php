@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace WebVision\Deepl\Base\Imaging\IconProvider;
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconProvider\AbstractSvgIconProvider;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 /**
  * Provides a custom svg icon provider rendering svg use markups for svg's,
@@ -38,11 +40,21 @@ final class DeeplBaseSvgIconProvider extends AbstractSvgIconProvider
         }
 
         $source = $options['source'];
-        return $this->generateSvgUseMarkup($source);
+        return match ((new Typo3Version())->getMajorVersion()) {
+            13 => $this->getCore13InlineSvg($source),
+            default => $this->getInlineSvg($source),
+        };
     }
 
     private function generateSvgUseMarkup(string $source): string
     {
         return '<svg class="icon-color"><use xlink:href="' . htmlspecialchars($this->getPublicPath($source)) . '" /></svg>';
+    }
+
+    private function getCore13InlineSvg(string $source): string
+    {
+        $source = $this->getPublicPath($source);
+        $source = rtrim(Environment::getPublicPath(), '/') . '/' . ltrim($source, '/');
+        return $this->getInlineSvg($source);
     }
 }
