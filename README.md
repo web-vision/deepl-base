@@ -146,8 +146,8 @@ Prerequisites:
 ```bash
 echo '>> Create release based on configuration' ; \
   RELEASE_BRANCH='main' ; \
-  RELEASE_VERSION="2.0.3"
-  DEV_VERSION="2.0.4"
+  RELEASE_VERSION="2.0.3" \
+  DEV_VERSION="2.0.4" \
   echo ">> Checkout branches" && \
   git checkout main && \
   git fetch --all && \
@@ -157,8 +157,8 @@ echo '>> Create release based on configuration' ; \
   echo ">> Create release ${RELEASE_VERSION}" && \
   git checkout -b release-${RELEASE_VERSION} && \
   sed -i "s/^COMPOSER_ROOT_VERSION.*/COMPOSER_ROOT_VERSION=\"${RELEASE_VERSION}\"/" Build/Scripts/runTests.sh && \
-  sed -i "s/^  RELEASE_VERSION.*/  RELEASE_VERSION=\"${RELEASE_VERSION}\"/" README.md && \
-  sed -i "s/^  DEV_VERSION.*/  DEV_VERSION=\"${DEV_VERSION}\"/" README.md && \
+  sed -i "s/^  RELEASE_VERSION.*/  RELEASE_VERSION=\"${RELEASE_VERSION}\" \\\\/" README.md && \
+  sed -i "s/^  DEV_VERSION.*/  DEV_VERSION=\"${DEV_VERSION}\" \\\\/" README.md && \
   tailor set-version ${RELEASE_VERSION} && \
   composer config "extra"."typo3/cms"."version" "${RELEASE_VERSION}" && \
   echo "${RELEASE_VERSION}" > VERSION && \
