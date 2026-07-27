@@ -130,6 +130,31 @@ and `Resources/Private/Backend/Partials/Translation/DefaultTranslationDropdown.h
 > example, if one or more [InjectVariableViewhelper](#injectvariablesviewhelper)
 > has been placed along with the identifier and use-case.
 
+#### `PageLayout/LanguageColumns.html`
+
+Overridden in `Resources/Private/Core12/Backend/Partials/` and
+`Resources/Private/Core13/Backend/Partials/`, carrying these
+[InjectVariablesViewHelper](#injectvariablesviewhelper) identifiers:
+
+##### `languageTranslationDropdown`
+
+Renders every partial listed in `translationPartials` above the column grid,
+allowing an extension to provide its own translation dropdown for the page
+module. Filled by `DefaultTranslationDropdownEventListener` with the dropdown
+of this extension.
+
+##### `languageColumnButtons`
+
+Renders every partial listed in `buttonPartials` into the button group of a
+language column, between the edit and the localize button. It is rendered once
+per language column, with the column available as `{languageColumn}`.
+
+This lets an extension place its own button next to the core ones without
+overriding this partial as well - only the last of two registrations for the
+same core partial survives, so a second override would silently drop one of
+them. `EXT:enable_translated_content` uses it for its "Activate translated
+content" button.
+
 ## Create a release (maintainers only)
 
 Prerequisites:
