@@ -52,6 +52,11 @@
                                     <core:icon identifier="actions-open" />
                                 </a>
                             </f:if>
+                            <deeplbase:injectVariables identifier="languageColumnButtons">
+                                <f:for each="{buttonPartials}" as="buttonPartial">
+                                    <f:render partial="{buttonPartial}" arguments="{_all}"/>
+                                </f:for>
+                            </deeplbase:injectVariables>
                             <f:if condition="{allowEditContent} && {languageColumn.context.siteLanguage.languageId} && {languageColumn.translationData.untranslatedRecordUids}">
                                 <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
                                     title="{languageColumn.context.translatePageTitle}"
