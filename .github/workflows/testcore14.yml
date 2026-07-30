@@ -1,5 +1,15 @@
 name: tests core 14
 
+# Every "runTests.sh" call below passes "-b docker". The script prefers podman
+# whenever it is present and only falls back to docker, which is the right
+# default for it -- but GitHub hosted runners ship both, and since 2026-07-29
+# their podman/crun combination aborts the first container start of a job with
+# "OCI runtime error: crun: unknown version specified" (exit code 126). It is
+# intermittent, hits any job, and was traced to neither the runner image nor
+# the TYPO3 testing image changing. Selecting docker here avoids crun entirely
+# and leaves the script default and local runs untouched. Drop the flag once
+# GitHub stops producing the mismatch.
+
 on:
   pull_request:
 
@@ -17,31 +27,31 @@ jobs:
 
       - name: "Prepare dependencies for TYPO3 v14"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s composerUpdate
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s composerUpdate
 
       - name: "Validate CGL"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s cgl -n
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s cgl -n
 
       - name: "Ensure tests methods do not start with \"test\""
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s checkTestMethodsPrefix
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s checkTestMethodsPrefix
 
       - name: "Ensure UTF-8 files do not contain BOM"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s checkBom
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s checkBom
 
 #      - name: "Test .rst files for integrity"
 #        run: |
-#          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s checkRst
+#          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s checkRst
 
       - name: "Find duplicate exception codes"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s checkExceptionCodes
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s checkExceptionCodes
 
       - name: "Run PHPStan"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s phpstan
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s phpstan
 
   testsuite:
     name: all tests with core v14
@@ -57,40 +67,40 @@ jobs:
 
       - name: "Prepare dependencies for TYPO3 v14"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s composerUpdate
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s composerUpdate
 
       - name: "Run PHP lint"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s lintPhp
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s lintPhp
 
       - name: "Unit"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s unit
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s unit
 
       - name: "Unit Random"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s unitRandom
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s unitRandom
 
       - name: "Functional SQLite"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d sqlite
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d sqlite
 
       - name: "Functional MariaDB 10.5 mysqli"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d mariadb -a mysqli -i 10.5
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d mariadb -a mysqli -i 10.5
 
       - name: "Functional MariaDB 10.11 pdo_mysql"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d mariadb -a pdo_mysql -i 10.11
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d mariadb -a pdo_mysql -i 10.11
 
       - name: "Functional MySQL 8.0 mysqli"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d mysql -a mysqli -i 8.0
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d mysql -a mysqli -i 8.0
 
       - name: "Functional MySQL 8.4 pdo_mysql"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d mysql -a pdo_mysql -i 8.4
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d mysql -a pdo_mysql -i 8.4
 
       - name: "Functional PostgresSQL 10"
         run: |
-          Build/Scripts/runTests.sh -t 14 -p ${{ matrix.php-version }} -s functional -d postgres -i 10
+          Build/Scripts/runTests.sh -b docker -t 14 -p ${{ matrix.php-version }} -s functional -d postgres -i 10
