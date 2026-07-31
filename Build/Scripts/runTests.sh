@@ -687,7 +687,7 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         ;;
     renderDocumentation)
-        ${CONTAINER_BIN} run ${DOCUMENTATION_COMMON_PARAMS} --pull always ghcr.io/typo3-documentation/render-guides:latest --config=Documentation
+        ${CONTAINER_BIN} run ${DOCUMENTATION_COMMON_PARAMS} --pull always ${IMAGE_DOCS} --config=Documentation
         SUITE_EXIT_CODE=$?
         ;;
     phpstan)
