@@ -46,8 +46,7 @@
         "sort-packages": true,
         "allow-plugins": {
             "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
-            "vaimo/composer-patches": true
+            "typo3/cms-composer-installers": true
         },
         "audit": {
             "block-insecure": false,
@@ -69,8 +68,7 @@
         },
         "branch-alias": {
             "dev-main": "2.0.x-dev"
-        },
-        "patches-search": "patches/"
+        }
     },
     "require": {
         "php": "^8.2 || ^8.3 || ^8.4 || ^8.5",
@@ -104,8 +102,7 @@
         "typo3/cms-styleguide": "~13.4.28@dev || ~14.3.0@dev",
         "typo3/cms-tstemplate": "~13.4.28@dev || ~14.3.0@dev",
         "typo3/cms-workspaces": "~13.4.28@dev || ~14.3.0@dev",
-        "typo3/testing-framework": "^9.5.0",
-        "vaimo/composer-patches": "^6.0.1"
+        "typo3/testing-framework": "^9.5.0"
     },
     "autoload": {
         "psr-4": {
