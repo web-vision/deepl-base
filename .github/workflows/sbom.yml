@@ -1,0 +1,18 @@
+name: SBOM
+on:
+  push:
+    branches: [main]
+    tags: ['*']
+  schedule:
+    # weekly, Monday 04:00 UTC 
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+jobs:
+  sbom:
+    uses: web-vision/.github/.github/workflows/sbom-reusable.yml@v1.0.3
+    with:
+      dry_run: false
+    secrets:
+      DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
+      DTRACK_API_URL: ${{ secrets.DTRACK_API_URL }}
